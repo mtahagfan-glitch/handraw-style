@@ -115,10 +115,11 @@ ffmpeg -f lavfi -i "sine=frequency=2000:duration=0.18" -af "afade=t=out:st=0.14:
 
 ### 7. Proof and honesty
 
-- **Open on clay.** Render the same camera move with every material replaced by one neutral grey, then wipe from the clay version to the final render in the first two seconds. It shows the viewer the shot is geometry.
+- **Open on clay.** Render the same camera move with every material replaced by one neutral grey, then wipe from the clay version to the final render in the first two seconds. It shows the viewer the shot is geometry. Both clips stay in step, so the camera move and the sound are not shifted (an `xfade` would delay the final render by the wipe's offset):
 
 ```bash
-ffmpeg -i clay.mp4 -i final.mp4 -filter_complex "[0][1]xfade=transition=wipeleft:duration=1.2:offset=0.8" -c:v libx264 -crf 16 shot.mp4
+ffmpeg -i clay.mp4 -i final.mp4 -filter_complex \
+  "[0][1]blend=all_expr='if(lte(X,W*clip((T-0.8)/1.2,0,1)),B,A)'" -c:v libx264 -crf 16 -pix_fmt yuv420p shot.mp4
 ```
 
 - **Say what is 2D.** The source lists its cheats: the view outside the window is a relit 2D backplate, and the rain and the creature are 2D cards. Use the same cheats (anything outside the room, anything organic, anything too small to model), and list them when handing over.
