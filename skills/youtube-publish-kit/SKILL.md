@@ -37,6 +37,16 @@ Put 2 to 5 in one `publish.md`.
 - Then three to five bullet points of what the viewer will learn, the chapters, a line asking for a subscribe, and the sources.
 - Say that the illustrations are drawn for the video and that the story follows published reporting.
 
+## Shorts (after every long video)
+
+Cut 3 to 5 vertical shorts from each finished long video, for TikTok and YouTube Shorts, without being asked.
+
+- Pick stretches of 45 to 80 seconds that start on a hook and **end on an open question or a cliffhanger**, cut on scene boundaries so no sentence is clipped.
+- `output/milan-ultras/shorts.py <work> <video> <out_dir>` builds them from `shorts.json` (first scene, last scene, a two-line title, a closing question): 1080x1920, the picture in the middle over a blurred copy, a title on top, burned captions from the voice timing, the channel name, and a 3 second end card that says "القصة كاملة في القناة".
+- Arabic text is burned with ffmpeg's `ass` filter and `shaping=complex`. The `subtitles` filter has no shaping option and leaves boxes for some letters.
+- Write `captions.md` with one caption per short: a hook line, "القصة كاملة في القناة", the full video's link (ask the owner for it once the video is published), and five hashtags.
+- Look at one frame of each short and of the end card before sending.
+
 ## Research (optional)
 
 `skills/youtube-research/` holds TubeLab's title, thumbnail, ideation and script-breakdown skills. They need the TubeLab connector and a TubeLab account; without it, use the rules above.
