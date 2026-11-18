@@ -37,6 +37,14 @@ Put 2 to 5 in one `publish.md`.
 - Then three to five bullet points of what the viewer will learn, the chapters, a line asking for a subscribe, and the sources.
 - Say that the illustrations are drawn for the video and that the story follows published reporting.
 
+## Channel intro (every long video)
+
+Every long video opens with its hook, then the channel intro, then the story.
+
+- The owner records `output/channel/intro/intro_script.txt` once; the same recording is reused in every video.
+- `output/channel/intro/make_intro.py --voice <intro.wav>` renders the intro in the ink style (ink blot, logo, title, tagline, a three-picture montage for جرايم / كورة / أسرار, subscribe line) and stretches it to the recording. Swap the montage pictures (`MONTAGE`) for illustrations from the new video when it fits.
+- Insert it after the hook scenes (usually after scene 2) as its own segment: the story's music fades out under it and back in after it.
+
 ## Shorts (after every long video)
 
 Cut 3 to 5 vertical shorts from each finished long video, for TikTok and YouTube Shorts, without being asked.
