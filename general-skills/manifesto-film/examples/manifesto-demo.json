@@ -1,0 +1,47 @@
+{
+  "format": {"w": 1920, "h": 1080, "fps": 25},
+  "bpm": 90,
+  "look": "film",
+  "audio": "manifesto",
+  "chromeOn": false,
+  "grain": 0.14,
+  "tail": 0.6,
+  "fadeOut": 0.8,
+  "scenes": [
+    {"type": "decode", "beats": 5, "text": "BRANDING\\MOTION", "size": 62, "smear": true},
+    {"type": "words", "in": "smear", "inBeats": 0.6, "wordBeats": 1, "size": 66,
+     "shots": [
+       {"src": {"video": "../../abha-land-reel/source/src.mp4", "start": 0.5}, "words": "هل نقدر"},
+       {"src": "../../land2/keyframes/K0_candidate_46s.jpg", "words": "نرى"},
+       {"src": {"video": "../../land2/clips/flow/nC2_palace.mp4", "start": 2.5}, "words": "القصر"},
+       {"src": "../../land2/keyframes/K0_low_bare.jpg", "words": "قبل أن يُبنى؟", "fx": "spread", "positions": [[0.78, 0.22], [0.3, 0.5], [0.62, 0.78]], "beats": 3},
+       {"src": {"video": "../../land2/clips/flow/nB_roads.mp4", "start": 1.5}, "words": "نرسم"},
+       {"src": "../../land2/keyframes/K1b_low_roads.jpg", "words": "الطرق"},
+       {"src": "../../land2/keyframes/K1v_for_flow.jpg", "words": "من"},
+       {"src": "../../land2/keyframes/K0_flow_enhanced_horizontal.jpg", "words": "الهواء؟", "fx": "smear", "beats": 1.6},
+       {"src": {"video": "../../land2/clips/flow/nD_terraces.mp4", "start": 1.0}, "words": "نزرع"},
+       {"src": "../../land2/keyframes/K3_flow_complete.jpg", "words": "سفحًا كاملًا؟", "beats": 2},
+       {"src": {"video": "../../land2/clips/flow/c4_terraces.mp4", "start": 0.5}, "words": "نختصر شهورًا"},
+       {"src": {"video": "../../land2/clips/flow/c5_estate.mp4", "start": 0.5}, "words": "في ثوانٍ؟", "fx": "big", "beats": 2}
+     ]},
+    {"type": "full", "beats": 5, "in": "dissolve", "inBeats": 1, "hit": 0.5, "src": "../../land2/keyframes/K0_candidate_86s.jpg", "zoomTo": 1.9, "zoomEase": "in"},
+    {"type": "slugs", "per": 0.5, "items": [
+       {"src": "../../land2/keyframes/K0_candidate_40s.jpg", "t": "abha-sir-alaib-3835m2"},
+       {"src": "../../land2/keyframes/K3a_low_palace.jpg", "t": "khalidiyah-12694m2"},
+       {"src": "../../land2/keyframes/K3a_flow_palace_only.jpg", "t": "palace-on-plateau"},
+       {"src": "../../land2/keyframes/K3_flow_complete.jpg", "t": "asir-stone-terraces"},
+       {"src": "../../land2/keyframes/K1b_low_roads.jpg", "t": "roads-sidewalks-lights"},
+       {"src": "../../land2/keyframes/K2_flow_foundations.jpg", "t": "flow-keyframes-k0-k4"},
+       {"src": {"video": "../../land2/clips/flow/nC2_palace.mp4", "start": 3}, "t": "golden-wireframe-build"},
+       {"src": {"video": "../../land2/clips/flow/c5_estate.mp4", "start": 3.5}, "t": "sunset-estate"},
+       {"src": "../../land2/keyframes/K1_plan_draft_clean.jpg", "t": "owner-drawn-boundaries"},
+       {"src": "../../land2/keyframes/K0v_flow_bare_vertical.jpg", "t": "bassam-reel-skill"},
+       {"src": "../../land2/keyframes/K0_low_bare.jpg", "t": "129bpm-beat-grid"},
+       {"src": "../../land2/keyframes/K0_candidate_64s.jpg", "t": "manifesto-film-skill"}
+    ]},
+    {"type": "swap", "beats": 8, "in": "dissolve", "before": "ما", "default": "نصنعه", "after": "بهذه اللحظة،", "size": 44, "per": 0.5, "slotAt": 1.2,
+     "slot": [{"t": "أبها", "box": true}, {"t": "الخالدية"}, {"t": "FLOW", "box": true}, {"t": "بسام"}, {"t": "CLAUDE", "box": true}, {"t": "عسير"}],
+     "line2": "سيصنع هذه اللحظة."},
+    {"type": "decode", "beats": 5, "in": "dissolve", "inBeats": 0.6, "text": "BRANDING\\MOTION", "size": 62}
+  ]
+}

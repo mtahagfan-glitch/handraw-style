@@ -1,0 +1,27 @@
+{
+  "format": {"w": 1440, "h": 1080, "fps": 25},
+  "bpm": 129,
+  "chrome": {"left": "2025", "right": "2026"},
+  "tail": 0.2,
+  "scenes": [
+    {"type": "hook", "beats": 4, "hit": 0.5,
+     "words": [{"t": "ايش", "font": "ruqaa", "bg": "#050505", "size": 300},
+               {"t": "سويت آخر", "font": "naskh", "bg": "#F4F2EE", "style": "slide", "size": 230}],
+     "big": "10", "bigSub": "أيام؟", "chrome": false},
+    {"type": "tiles", "beats": 4, "mark": "BM", "size": 240, "label": "branding-motion · هوية", "role": "تصميم"},
+    {"type": "construct", "beats": 4, "mark": "BM", "size": 300, "label": "branding-motion · هوية", "role": "تحريك"},
+    {"type": "stroke", "beats": 4, "word": "أبها", "latin": "ABHA", "size": 150, "label": "سر العيب · أرض", "role": "تحريك"},
+    {"type": "counter", "beats": 4, "img": {"video": "../../abha-land-reel/source/src.mp4", "start": 3}, "to": 3835, "unit": "م² · أرض سر العيب", "discColor": "#F07A3A", "label": "سر العيب · أرض", "role": "موشن جرافيك"},
+    {"type": "device", "beats": 4, "bg": "#F4F2EE", "src": {"video": "../../output/khalidiyah-land-reel.mp4", "start": 17}, "bleed": ["إعلان", "عمودي"], "side": "٤٠ ثانية", "sparkles": true, "label": "الخالدية · أرض", "role": "مونتاج", "in": "push"},
+    {"type": "flurry", "beats": 4, "per": 0.5, "energy": "flurry", "hit": 0.4,
+     "srcs": ["../../land2/keyframes/K0v_flow_bare_vertical.jpg", "../../land2/keyframes/K1b_low_roads.jpg", "../../land2/keyframes/K3a_low_palace.jpg", "../../land2/keyframes/K2_flow_foundations.jpg", "../../land2/keyframes/K3a_flow_palace_only.jpg", "../../land2/keyframes/K3_flow_complete.jpg", "../../land2/keyframes/K1v_for_flow.jpg", "../../land2/keyframes/K0_flow_enhanced_horizontal.jpg"],
+     "card": true, "label": "Google Flow · توليد", "role": "إخراج"},
+    {"type": "nodes", "beats": 4, "src": "../../land2/keyframes/K0_flow_enhanced_horizontal.jpg", "nodes": [{"t": "الأرض", "x": 0.22, "y": 0.66}, {"t": "المخطط", "x": 0.5, "y": 0.28}, {"t": "القصر", "x": 0.78, "y": 0.66}], "label": "خطة التوليد", "role": "تخطيط", "in": "zoom"},
+    {"type": "scale", "beats": 4, "src": "../../land2/keyframes/K3a_low_palace.jpg", "measure": "12,694 م²", "objW": 330, "objH": 520, "label": "الخالدية · أرض", "role": "تصوّر", "chrome": true},
+    {"type": "full", "beats": 4, "src": {"video": "../../land2/clips/flow/c5_estate.mp4"}, "caption": "قصر ومزارع", "label": "الخالدية · أرض", "role": "تحريك", "in": "push", "dir": "right"},
+    {"type": "stats", "beats": 4, "title": "الحصيلة", "chip": "آخر 10 أيام", "cards": [{"k": "إعلانات", "v": "2"}, {"k": "مقاطع Flow", "v": "8"}, {"k": "ثوانٍ مركّبة", "v": "73"}, {"k": "نسخ نهائية", "v": "3"}], "label": "أرقام", "role": "بيانات", "hit": 0.3},
+    {"type": "grid", "beats": 4, "cols": 5, "srcs": ["../../land2/keyframes/K0_candidate_46s.jpg", "../../land2/keyframes/K1_plan_draft_review.jpg", "../../land2/keyframes/K3a_low_palace.jpg", "../../land2/keyframes/K1b_low_roads.jpg", "../../land2/keyframes/K3_flow_complete.jpg", "../../land2/keyframes/K0_flow_enhanced_horizontal.jpg", "../../land2/keyframes/K2_flow_foundations.jpg", "../../land2/keyframes/K0_low_bare.jpg", "../../land2/keyframes/K3a_flow_palace_only.jpg", "../../land2/keyframes/K0v_flow_bare_vertical.jpg"], "label": "كل الأعمال", "role": "مونتاج"},
+    {"type": "more", "beats": 3, "word": "أكثر", "plus": 3, "chrome": false},
+    {"type": "handle", "beats": 3, "text": "@branding.motion", "chrome": false}
+  ]
+}
