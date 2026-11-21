@@ -22,4 +22,9 @@ def up(p):
     tmp.write_bytes(urllib.request.urlopen(url).read())
     im = Image.open(tmp).convert('RGB'); size = (2560, 1440) if im.width >= im.height else (1440, 2560)
     im.resize(size, Image.LANCZOS).save(out, quality=95); tmp.unlink(); print('ok', p.name, flush=True)
-with ThreadPoolExecutor(4) as ex: list(ex.map(up, sorted(src.glob('*.png'))))
+def safe(p):
+    for k in range(3):                      # fal sometimes answers 422/5xx under load: retry, never kill the batch
+        try: return up(p)
+        except Exception as e: err = e
+    print('FAILED', p.name, err, flush=True)
+with ThreadPoolExecutor(3) as ex: list(ex.map(safe, sorted(src.glob('*.png'))))
