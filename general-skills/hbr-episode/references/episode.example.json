@@ -1,0 +1,15 @@
+{"music":[
+ {"file":"tense.mp3","from":0,"to":2,"gain":1.25},
+ {"file":"bed.mp3","from":2,"to":8,"gain":1.0,"transition":false},
+ {"file":"sky_master.wav","from":8,"to":12,"gain":0.576,"at":{"scene":9,"t":52}},
+ {"file":"tense.mp3","from":12,"to":21,"gain":1.25},
+ {"file":"odds_master.wav","from":21,"to":27,"gain":0.64,"at":{"scene":23,"t":100}},
+ {"file":"tense.mp3","from":27,"to":32,"gain":1.25,"offset":40},
+ {"file":"ticking_master.wav","from":32,"to":41,"gain":0.64,"at":{"scene":38,"t":96}},
+ {"file":"relentless_master.wav","from":41,"to":49,"gain":0.576},
+ {"file":"sky_master.wav","from":49,"to":55,"gain":0.576,"at":{"scene":52,"t":52}},
+ {"file":"resting_master.wav","from":55,"to":60,"gain":0.6,"at":{"scene":58,"t":67}},
+ {"file":"legend_master.wav","from":60,"to":"end","gain":0.68,"at":{"word":"ولحكا","t":120}}],
+ "sfx":{"rules":[["red card|penalty|blocked at the last","whistle"],["crosses|island coastline|locker room|hourglass|treatment","heart"],["free kick|half-volley|comets|chip shot|striking","kick"],["celebrat|ecstasy|lifted on|erupting|avenue","net"],["anthem|crowd|flags","chant"],["fortress|atlas|mountain|father time|gates","boom"],["book|timeline|price tags|scale","page"]]},
+ "inserts":[{"file":"farewell/commentary.wav","after_scene":65}],
+ "extra_silence":{"65":6.6}}

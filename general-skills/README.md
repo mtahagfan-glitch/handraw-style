@@ -1,6 +1,6 @@
 # General Skills — كل المهارات من مستودعاتي
 
-مجموعة 99 مهارة جُمعت من 6 مستودعات وكل فروعها. لكل مهارة أُخذت أحدث نسخة؛ والنسخ المتطابقة بين الفروع/المستودعات دُمجت في نسخة واحدة.
+مجموعة 100 مهارة جُمعت من 6 مستودعات وكل فروعها. لكل مهارة أُخذت أحدث نسخة؛ والنسخ المتطابقة بين الفروع/المستودعات دُمجت في نسخة واحدة.
 
 ## طريقة الاستخدام
 - انسخ مجلد المهارة إلى `.claude/skills/` في أي مشروع، أو إلى `~/.claude/skills/` لتكون متاحة في كل مشاريعك.
@@ -67,6 +67,7 @@
 | [`community-share`](community-share/SKILL.md) | 通用手绘风社区发帖与静态页面/资产发布 Skill。打通 handraw-style.com (Discourse) 官方论坛账号系统与静态画廊发布系统。涵盖双重能力：(1) 全板块论坛发帖与管理（创作交流、好用的工具、综合大厅、运营与变现、实战作品与爆款、手绘skill）：支持发布通用长帖、出版级手绘提示词卡片、自动配图直传短链、回帖、帖子查询与删除；(2 | `claude/sweet-brown-8w1zo5` : `skills/community-share` | handraw-style@master |
 | [`couple-photo-orchestrator`](couple-photo-orchestrator/SKILL.md) | Orchestrates professional portrait, couple, wedding, family, cosplay, and themed photography planning from direction selection through Look, scene micro-zones, Shot List, and on-de | `claude/sweet-brown-8w1zo5` : `skills/couple-photo-orchestrator` | handraw-style@master |
 | [`custom-asset-manager`](custom-asset-manager/SKILL.md) | 管理自建图库（角色库、道具库、场景库）全生命周期资产。支持初始化与挂载图库目录、新增归档资产、替换基准图、修改名称与标签、安全删除资产、查询清单及自动刷新画廊。当用户提出“添加到角色库”、“替换IP图片”、“修改角色名称”、“删除角色/道具/场景”、“初始化图库目录”等资产维护需求时使用。 | `claude/sweet-brown-8w1zo5` : `skills/custom-asset-manager` | handraw-style@master |
+| [`hbr-episode`](hbr-episode/SKILL.md) | خط إنتاج حلقة «حبر وسالفة» كامل: رسم، بارالاكس، صوت، موسيقى بفواصل، موشن قرافيك، لقطات متحركة، تصدير 1440p، شورتس | `claude/sweet-brown-8w1zo5` : `skills/hbr-episode` |  |
 | [`handdraw-style-prompter`](handdraw-style-prompter/SKILL.md) | 内置300多个画风，图型，主题色。支持纯图模式，图文模式，可以给文章做封面，批量制作插图。可以批量制作海报，漫画，小红书组图。信息图，ip设计稿，电商图甚至真人摄影都随意拿捏。 | `claude/sweet-brown-8w1zo5` : `skills/handdraw-style-prompter` | handraw-style@master |
 | [`handraw-style-root`](handraw-style-root/SKILL.md) | Turn a 001–370 hand-drawn and realistic style number and image theme into bilingual prompts, using model capability data to decide when core traits and a numbered reference image a | `claude/sweet-brown-8w1zo5` : `.` | handraw-style@master |
 | [`hyperframes--handraw-style`](hyperframes--handraw-style/SKILL.md) | Read first to make, edit, animate or render any video with HyperFrames (HTML rendered to video), including launch films, explainers, music videos, charts, maps, vertical clips, tit | `claude/sweet-brown-8w1zo5` : `skills/hyperframes` | branding-motion@claude/laughing-curie-q557ao, branding-motion@claude/sleepy-hypatia-g72q7k |
