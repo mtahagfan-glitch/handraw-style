@@ -15,6 +15,7 @@ Lessons from the first two episodes are in [references/lessons.md](references/le
 - Topics: true stories with a twist (football, crime, secrets). Check that published reporting supports every claim.
 - Structure every long video: **hook (≤30 s, the most dramatic moment, told out of order) → channel intro → story**.
   The hook ends on a question; the story answers it at the end.
+- Write for the ear and give the owner a performance copy with delivery marks: [references/narration.md](references/narration.md).
 - Write `scenes.json`: `[{"ar": "<Saudi-dialect narration>", "img": "<English image prompt>"}]`, one drawing per
   scene, a scene every 10–20 s of narration. Image prompts follow the channel style (ink line art on aged paper,
   muted colour accents, gold/blue light); describe what is seen, never ask for text in the image.
