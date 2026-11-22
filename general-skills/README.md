@@ -1,6 +1,6 @@
 # General Skills — كل المهارات من مستودعاتي
 
-مجموعة 100 مهارة جُمعت من 6 مستودعات وكل فروعها. لكل مهارة أُخذت أحدث نسخة؛ والنسخ المتطابقة بين الفروع/المستودعات دُمجت في نسخة واحدة.
+مجموعة 108 مهارات جُمعت من 6 مستودعات وكل فروعها. لكل مهارة أُخذت أحدث نسخة؛ والنسخ المتطابقة بين الفروع/المستودعات دُمجت في نسخة واحدة.
 
 ## طريقة الاستخدام
 - انسخ مجلد المهارة إلى `.claude/skills/` في أي مشروع، أو إلى `~/.claude/skills/` لتكون متاحة في كل مشاريعك.
@@ -135,3 +135,18 @@
 | [`scene-card`](scene-card/SKILL.md) | Create or fill a scene/shot card for The Last Storyteller before generating any video. Use when planning a shot, writing a storyboard entry, or when the user asks for a "بطاقة مشهد | `setup/repo-structure` : `.claude/skills/scene-card` |  |
 | [`storyteller-pipeline`](storyteller-pipeline/SKILL.md) | End-to-end workflow for producing one Arabic Last Storyteller video — script, ElevenLabs voice, image-to-video animation, lip-sync, HyperFrames edit and export. Use when the user a | `setup/repo-structure` : `.claude/skills/storyteller-pipeline` |  |
 | [`storyteller-script`](storyteller-script/SKILL.md) | Write or revise an Arabic spoken script for The Last Storyteller (hook, setup, escalation, reveal, aftertaste) tuned for ElevenLabs delivery and fast modern pacing. Use when the us | `setup/repo-structure` : `.claude/skills/storyteller-script` |  |
+
+## إضافات (TubeLab youtube-research-skills + مهارات أخرى)
+
+| المهارة | الوصف | المصدر |
+|---|---|---|
+| [`audit-channel-risk`](audit-channel-risk/SKILL.md) | فحص خطر إيقاف الربح/إغلاق القناة (TubeLab) | TubeLabHQ/youtube-research-skills (MIT) |
+| [`comment-mining`](comment-mining/SKILL.md) | تحليل تعليقات الجمهور (TubeLab) | TubeLabHQ/youtube-research-skills (MIT) |
+| [`niche-bending`](niche-bending/SKILL.md) | نقل فورمات ناجح لسوق جديد (TubeLab) | TubeLabHQ/youtube-research-skills (MIT) |
+| [`reverse-engineer-channel`](reverse-engineer-channel/SKILL.md) | تفكيك قناة: فورمات، عناوين، هوكات، سكربت (TubeLab) | TubeLabHQ/youtube-research-skills (MIT) |
+| [`reverse-engineer-niche`](reverse-engineer-niche/SKILL.md) | تفكيك نيش كامل وأفكار فيديو (TubeLab) | TubeLabHQ/youtube-research-skills (MIT) |
+| [`roast-channel`](roast-channel/SKILL.md) | تقييم صريح لقناة (TubeLab) | TubeLabHQ/youtube-research-skills (MIT) |
+| [`trend-report`](trend-report/SKILL.md) | وش ينجح الحين في نيش، وليش انفجر فيديو (TubeLab) | TubeLabHQ/youtube-research-skills (MIT) |
+| [`faceless-explainer-video-remotion`](faceless-explainer-video-remotion/SKILL.md) | فيديو شرح بدون وجه بـ Remotion (مستخرجة من مقطع، للمرجع) | مرفق من المالك |
+
+وتحدّثت من نفس المستودع: title-formulas, thumbnail-concepts, script-breakdown, video-ideation, tubelab-mcp.

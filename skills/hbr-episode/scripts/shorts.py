@@ -11,7 +11,7 @@ from pathlib import Path
 W, VID, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
 SHORTS = json.load(open(sys.argv[4] if len(sys.argv) > 4 else 'shorts.json'))
 a = json.load(open(f'{W}/align.json')); cuts = [c / 25 for c in a['cuts']]; S = a['sentences']
-FONTS = str(Path(__file__).resolve().parents[3] / 'output' / 'channel' / 'fonts'); os.makedirs(OUT, exist_ok=True)
+FONTS = str(Path(__file__).resolve().parents[1] / 'assets' / 'fonts'); os.makedirs(OUT, exist_ok=True)   # Amiri = channel video font
 END = 3.0
 wh = subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=width,height','-of','csv=p=0',VID]).decode().split(',')
 VERT = int(wh[1]) > int(wh[0])
@@ -29,10 +29,10 @@ for n, sh in enumerate(SHORTS, 1):
     s0, s1 = cuts[sh['first'] - 1], cuts[sh['last']] - 0.15; dur = s1 - s0
     L = ["[Script Info]", "ScriptType: v4.00+", "PlayResX: 1080", "PlayResY: 1920", "WrapStyle: 0", "", "[V4+ Styles]",
          "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-         "Style: Title,Lalezar,100,&H00FFFFFF,&H0,&H00000000,&H0,0,0,0,0,100,100,0,0,1,6,0,8,60,60,150,1",
-         "Style: Cap,Lalezar,96,&H0000D7FF,&H0,&H00000000,&H0,0,0,0,0,100,100,0,0,1,7,0,8,70,70,1390,1",
-         "Style: Brand,Lalezar,60,&H00FFFFFF,&H0,&H00000000,&H0,0,0,0,0,100,100,0,0,1,4,0,2,60,60,120,1",
-         "Style: End,Lalezar,110,&H00FFFFFF,&H0,&H00000000,&H0,0,0,0,0,100,100,0,0,1,7,0,5,60,60,0,1",
+         "Style: Title,Amiri,92,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,6,0,8,60,60,150,1",
+         "Style: Cap,Amiri,88,&H0000D7FF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,7,0,8,70,70,1390,1",
+         "Style: Brand,Amiri,55,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,4,0,2,60,60,120,1",
+         "Style: End,Amiri,101,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,7,0,5,60,60,0,1",
          "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
     ev = lambda st, a_, b_, t: L.append(f"Dialogue: 0,{ts(a_)},{ts(b_)},{st},,0,0,0,,{t}")
     ev('Title', 0, dur, sh['title'].replace('|', r'\N'))

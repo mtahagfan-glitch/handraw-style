@@ -2,7 +2,7 @@
 
   python3 mg.py <template> '<json params>' <out.webm|out.mp4> [--size 1920x1080] [--dur 4]
 
-Templates (Arabic text is shaped by the browser; font = Lalezar from output/channel/fonts):
+Templates (Arabic text is shaped by the browser; font = Amiri Bold from assets/fonts):
   stat      {"num": 8, "suffix": "", "prefix": "", "label": "أهداف في البطولة", "sub": "رقم قياسي"}
             big number counts up, label underneath. Full card on dark paper (mp4) or transparent (webm).
   name      {"name": "كيليان مبابي", "role": "مهاجم فرنسا · 19 سنة"}           lower third, slides in, transparent.
@@ -19,7 +19,7 @@ import argparse, json, shutil, subprocess, tempfile
 from pathlib import Path
 
 SKILL = Path(__file__).resolve().parents[1]
-FONT = SKILL.parents[1] / 'output' / 'channel' / 'fonts' / 'Lalezar.ttf'
+FONT = SKILL / 'assets' / 'fonts' / 'Amiri-Bold.ttf'       # channel font for video text: Amiri
 ap = argparse.ArgumentParser(); ap.add_argument('tpl'); ap.add_argument('params'); ap.add_argument('out')
 ap.add_argument('--size', default='1920x1080'); ap.add_argument('--dur', type=float, default=4.0)
 a = ap.parse_args(); P = json.loads(a.params); W, H = map(int, a.size.split('x')); D = a.dur
@@ -27,9 +27,9 @@ ALPHA = a.out.endswith(('.webm', '.mov'))
 GOLD, RED, PAPER, INK = '#ffd23f', '#e0312a', '#efe6d2', '#141414'
 BG = 'transparent' if ALPHA else f'radial-gradient(ellipse at 50% 45%, #2a2621 0%, #0f0e0c 75%)'
 
-css = f"""@font-face{{font-family:L;src:url(assets/Lalezar.ttf)}}
+css = f"""@font-face{{font-family:L;src:url(assets/Amiri-Bold.ttf);font-weight:700}}
 *{{margin:0;padding:0;box-sizing:border-box}}html,body{{width:{W}px;height:{H}px;overflow:hidden;background:{'transparent' if ALPHA else '#0f0e0c'}}}
-#root{{position:relative;width:100%;height:100%;background:{BG};font-family:L;direction:rtl;color:{PAPER}}}
+#root{{position:relative;width:100%;height:100%;background:{BG};font-family:L;font-weight:700;line-height:1.35;direction:rtl;color:{PAPER}}}
 .c{{position:absolute;left:0;right:0;text-align:center}}
 .o{{-webkit-text-stroke:{max(4,H//180)}px {INK};paint-order:stroke fill;text-shadow:0 {H//200}px 0 {INK}}}
 .grain{{position:absolute;inset:0;opacity:.10;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}}"""
@@ -45,8 +45,8 @@ if a.tpl == 'stat':
 .from('#sub',{{opacity:0,duration:.4}},1.3).to('#root',{{opacity:0,duration:.35}},{D-0.35});"""
 elif a.tpl == 'name':
     body = f"""<div id="box" style="position:absolute;right:{90*u}px;bottom:{120*u}px;padding:{18*u}px {44*u}px {22*u}px;background:{PAPER};border-right:{14*u}px solid {RED};box-shadow:{10*u}px {10*u}px 0 {INK}">
-<div id="nm" style="font-size:{78*u}px;color:{INK};line-height:1.1">{P['name']}</div>
-<div id="rl" style="font-size:{44*u}px;color:#7a2018;line-height:1.2">{P.get('role','')}</div></div>"""
+<div id="nm" style="font-size:{78*u}px;color:{INK};line-height:1.45">{P['name']}</div>
+<div id="rl" style="font-size:{44*u}px;color:#7a2018;line-height:1.5">{P.get('role','')}</div></div>"""
     js = f"""tl.from('#box',{{x:{500*u},opacity:0,duration:.55,ease:'power3.out'}},0.1).from('#nm',{{opacity:0,duration:.3}},0.45)
 .from('#rl',{{opacity:0,y:{14*u},duration:.3}},0.6).to('#box',{{x:{500*u},opacity:0,duration:.4,ease:'power2.in'}},{D-0.45});"""
 elif a.tpl == 'timeline':
@@ -87,7 +87,7 @@ html = f"""<!doctype html><html lang="ar" data-resolution="{'landscape' if W > H
 <script>const tl=gsap.timeline({{paused:true}});{js}window.__timelines["main"]=tl;tl.seek(0);</script></body></html>"""
 p = Path(tempfile.mkdtemp(prefix='mg_'))
 for f in ('hyperframes.json', 'package.json', 'meta.json'): shutil.copy(SKILL / 'assets' / 'hf-template' / f, p / f)
-(p / 'assets').mkdir(); shutil.copy(FONT, p / 'assets' / 'Lalezar.ttf')
+(p / 'assets').mkdir(); shutil.copy(FONT, p / 'assets' / 'Amiri-Bold.ttf')
 if a.tpl == 'map' and P.get('bg'): shutil.copy(P['bg'], p / 'assets' / 'bg.jpg')
 (p / 'index.html').write_text(html)
 fmt = ['--format', 'webm'] if a.out.endswith('.webm') else ['--format', 'mov'] if a.out.endswith('.mov') else []

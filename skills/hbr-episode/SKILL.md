@@ -6,7 +6,8 @@ description: End-to-end production of a «حبر وسالفة» episode — Saud
 # حبر وسالفة — episode pipeline
 
 One folder per episode: `output/<slug>/`. Run every script **from that folder**. `SK` = this skill's folder.
-Shared channel assets live in `output/channel/` (fonts, intro, music library, SFX library, avatar/banner).
+Shared channel assets live in `output/channel/` (intro, music library, SFX library, avatar/banner).
+**Video text font: Amiri** (`assets/fonts/`, used by `mg.py` and `shorts.py`). Lalezar stays for thumbnails only.
 Lessons from the first two episodes are in [references/lessons.md](references/lessons.md): read it first.
 
 ## 0. Pick the story and plan the episode
