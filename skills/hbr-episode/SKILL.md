@@ -92,7 +92,10 @@ Shorts ≤ 3 min, loudness -14 ±2 LUFS, true peak, long silences, black stretch
 - Shorts: `python3 "$SK/scripts/shorts.py" parallax_real parallax_real_25d.mp4 shorts_hd` (1440×2560, burned
   captions, end card «القصة كاملة في القناة») + `captions.md`. Better: render the short's scenes natively
   vertical ([vertical-shorts](references/vertical-shorts.md)).
-- Post shorts 1–2 days **before** the long video as teasers, and pin the long video link in each.
+- **7 shorts per episode** (medium length, 45–80 s), posted around the long video, each linked to it.
+- Standalone daily shorts «سالفة في دقيقة» (3–4 a week): [references/daily-shorts.md](references/daily-shorts.md).
+- Shorts rules: motion + the question in the first second, big karaoke captions, loop endings for standalone ones,
+  YouTube "Related video" link to the long episode.
 
 ## 7. After publishing
 
