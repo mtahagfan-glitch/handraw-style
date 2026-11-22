@@ -79,7 +79,7 @@ elif a.tpl == 'map':
     bg = f'<img src="assets/bg.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.55) sepia(.25)">' if P.get('bg') else ''
     body = f"""{bg}<svg width="{W}" height="{H}" style="position:absolute;inset:0"><path id="rt" d="{path}" fill="none" stroke="{GOLD}" stroke-width="{9*u}" stroke-linecap="round" stroke-dasharray="{22*u} {14*u}"/></svg>{marks}
 <div class="c o" id="tt" style="top:{H*0.06}px;font-size:{84*u}px">{P.get('title','')}</div>"""
-    n = len(pts); step = (D - 1.4) / max(1, n - 1)
+    n = len(pts); step = (D - 2.4) / max(1, n - 1)   # leave ~1.5 s to read the last point
     js = ("const L=document.getElementById('rt').getTotalLength();gsap.set('#rt',{strokeDashoffset:0});"
           f"tl.from('#tt',{{opacity:0,duration:.4}},0.1).from('#p0',{{scale:0,duration:.3,ease:'back.out(3)'}},0.2).from('#l0',{{opacity:0,duration:.3}},0.3)"
           f".fromTo('#rt',{{attr:{{'stroke-dasharray':`0 ${{L}}`}}}},{{attr:{{'stroke-dasharray':`${{L}} 0`}},duration:{step*(n-1):.2f},ease:'power1.inOut'}},0.5)"
