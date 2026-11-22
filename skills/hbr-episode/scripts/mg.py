@@ -10,6 +10,19 @@ Templates (Arabic text is shaped by the browser; font = Amiri Bold from assets/f
   map       {"bg": "plate.jpg", "points": [[0.32,0.40,"روساريو"],[0.62,0.30,"برشلونة"]], "title": "..."}
             ink line draws from point to point (x,y as 0-1 of the frame) over a picture.
   quote     {"text": "...", "who": "..."}                                   big quote card.
+  trace     {"shapes":[{"type":"circle","x":.5,"y":.6,"r":.08},{"type":"arrow","from":[.2,.3],"to":[.45,.55]},
+             {"type":"underline","x":.3,"y":.7,"w":.2}], "label":{"text":"هذا هو الحد","x":.5,"y":.25}}
+            red ink marks draw themselves over the scene (webm). Point at the one detail the sentence is about.
+  chapter   {"num": "الجزء الثاني", "title": "الهروب"}     ink floods, title stamps, ink drains, title parks in the
+            corner (webm, ~4.5 s). Put one on every music section change: the viewer feels the new part.
+  dots      {"n": 40, "hit": 5, "label": "طلقة", "hit_label": "خمس منها أصابته"}   one dot per unit, hits turn red (mp4 card)
+  stamp     {"text": "خرق للهدنة", "x": .5, "y": .45}       rubber stamp slams on, misregistered then aligned (webm)
+  measure   {"cm": 27, "label": "أطول دودة", "max": 30}     ruler draws, red bar grows to the length (webm)
+  cctv      {"label": "كاميرا مراقبة · بانمونجوم"}          REC, brackets, scanlines for scenes told from real CCTV (webm, whole scene);
+            when overlaying, also grade the scene: -vf "hue=s=0.35,noise=alls=10:allf=t" so it reads as footage
+
+Use a graphic only when it makes the sentence land harder (a number to remember, the detail to look at, a new part).
+Never two at once, never on a moving (Flow/Veo) shot, and keep at least one plain scene between graphics.
 
 .webm renders keep transparency: overlay them on the scene with
   ffmpeg -i scene.mp4 -c:v libvpx-vp9 -i card.webm -filter_complex "[0][1]overlay=enable='between(t,2,6)'" ...
@@ -76,6 +89,100 @@ elif a.tpl == 'quote':
     body = f"""<div class="c o" id="q" style="top:{H*0.26}px;padding:0 {W*0.12}px;font-size:{86*u}px;line-height:1.45">«{P['text']}»</div>
 <div class="c o" id="w" style="top:{H*0.72}px;font-size:{56*u}px;color:{GOLD}">— {P.get('who','')}</div>"""
     js = f"tl.from('#q',{{opacity:0,y:{30*u},duration:.6}},0.1).from('#w',{{opacity:0,duration:.4}},0.9).to('#root',{{opacity:0,duration:.35}},{D-0.35});"
+elif a.tpl == 'trace':
+    # hand-drawn ink marks drawn on over a scene (transparent): circle a detail, point with an arrow, underline
+    import math, random
+    rnd = random.Random(7); paths = []
+    for sh in P['shapes']:
+        if sh['type'] == 'circle':
+            cx, cy, r = sh['x'] * W, sh['y'] * H, sh['r'] * H; pts = []
+            for k in range(0, 410, 10):                       # a bit more than one loop, wobbly like a pen
+                t = math.radians(k - 100); rr = r * (1 + 0.06 * math.sin(k / 37) + rnd.uniform(-0.015, 0.015))
+                pts.append(f'{cx + rr * 1.25 * math.cos(t):.0f} {cy + rr * math.sin(t):.0f}')
+            paths.append('M ' + ' L '.join(pts))
+        elif sh['type'] == 'arrow':
+            (x0, y0), (x1, y1) = [(p[0] * W, p[1] * H) for p in (sh['from'], sh['to'])]
+            mx, my = (x0 + x1) / 2 + (y1 - y0) * 0.15, (y0 + y1) / 2 - (x1 - x0) * 0.15
+            paths.append(f'M {x0:.0f} {y0:.0f} Q {mx:.0f} {my:.0f} {x1:.0f} {y1:.0f}')
+            ang = math.atan2(y1 - my, x1 - mx); L = 34 * u
+            for d in (2.6, -2.6):
+                paths.append(f'M {x1:.0f} {y1:.0f} L {x1 - L * math.cos(ang + d / 6):.0f} {y1 - L * math.sin(ang + d / 6):.0f}')
+        elif sh['type'] == 'underline':
+            x, y, w = sh['x'] * W, sh['y'] * H, sh['w'] * W
+            paths.append(f'M {x:.0f} {y:.0f} Q {x + w / 2:.0f} {y + 9 * u:.0f} {x + w:.0f} {y - 4 * u:.0f}')
+    svg = ''.join(f'<path class="pk" pathLength="1" d="{d}"/>' for d in paths)
+    lb = P.get('label')
+    lab = (f'<div id="lb" style="position:absolute;left:{lb["x"]*W}px;top:{lb["y"]*H}px;transform:translate(-50%,-50%);'
+           f'font-size:{lb.get("size",60)*u}px;color:{INK};background:{PAPER};padding:{4*u}px {26*u}px {10*u}px;border-right:{10*u}px solid {RED};box-shadow:{8*u}px {8*u}px 0 {INK};white-space:nowrap">{lb["text"]}</div>') if lb else ''
+    body = f"""<svg width="{W}" height="{H}" style="position:absolute;inset:0"><defs><filter id="rough"><feTurbulence baseFrequency="0.03" numOctaves="2" seed="3"/>
+<feDisplacementMap in="SourceGraphic" scale="{6*u}"/></filter></defs><g filter="url(#rough)" fill="none" stroke="{RED}" stroke-width="{9*u}" stroke-linecap="round" stroke-linejoin="round">{svg}</g></svg>{lab}"""
+    js = (f"gsap.set('.pk',{{strokeDasharray:1,strokeDashoffset:1}});"
+          f"tl.to('.pk',{{strokeDashoffset:0,duration:.7,ease:'power2.inOut',stagger:.25}},0.15)"
+          + (f".from('#lb',{{opacity:0,y:{12*u},duration:.35}},0.7)" if lb else '') + f".to('#root',{{opacity:0,duration:.35}},{D-0.35});")
+elif a.tpl == 'chapter':
+    # chapter sting over the first seconds of a part (transparent): ink floods the frame, the title stamps in,
+    # the ink drains away and the title shrinks into a corner label that stays a moment
+    R = (W ** 2 + H ** 2) ** 0.5 / 2 + 60
+    body = f"""<svg width="{W}" height="{H}" style="position:absolute;inset:0"><defs><filter id="bleed"><feTurbulence baseFrequency="0.012" numOctaves="3" seed="9"/>
+<feDisplacementMap in="SourceGraphic" scale="{90*u}"/></filter></defs><circle id="ink" cx="{W/2}" cy="{H/2}" r="{R}" fill="{INK}" filter="url(#bleed)"/></svg>
+<div id="grp" style="position:absolute;left:0;right:0;top:{H*0.36}px;text-align:center">
+<div id="num" style="font-size:{48*u}px;color:{RED};letter-spacing:{2*u}px">{P.get('num','')}</div>
+<div id="tt" style="font-size:{150*u}px;color:{PAPER};line-height:1.25">{P['title']}</div>
+<div id="rule" style="margin:{6*u}px auto 0;width:{W*0.18}px;height:{8*u}px;background:{RED};transform-origin:right"></div></div>"""
+    js = (f"tl.from('#ink',{{attr:{{r:0}},duration:.7,ease:'power3.in'}},0)"
+          f".from('#num',{{opacity:0,y:-20,duration:.3}},0.55).from('#tt',{{opacity:0,scale:1.25,duration:.35,ease:'power4.out'}},0.65)"
+          f".from('#rule',{{scaleX:0,duration:.4}},0.9)"
+          f".to('#ink',{{attr:{{r:0}},duration:.7,ease:'power3.inOut'}},2.0)"
+          f".to('#grp',{{top:{40*u},left:{W*0.62},right:{40*u},scale:.55,transformOrigin:'right top',duration:.7,ease:'power3.inOut'}},2.0)"
+          f".to('#tt',{{webkitTextStroke:'{8*u}px {INK}',paintOrder:'stroke fill',duration:.1}},2.0)"
+          f".to('#grp',{{opacity:0,duration:.4}},{D-0.4});")
+elif a.tpl == 'dots':
+    # one dot per unit (shots fired, people, years...), then the ones that matter turn red: "40 shots, 5 hit"
+    n, hit = int(P['n']), int(P.get('hit', 0)); cols = min(10, n); rows = -(-n // cols); g = 118 * u
+    x0, y0 = W / 2 - (cols - 1) * g / 2, H * 0.36 - (rows - 1) * g / 2
+    order = list(range(n)); import random; random.Random(4).shuffle(order); red = set(order[:hit])
+    dots = ''.join(f'<div class="dt{" hr" if i in red else ""}" style="position:absolute;left:{x0 + (i % cols) * g - 32*u}px;top:{y0 + (i // cols) * g - 32*u}px;'
+                   f'width:{64*u}px;height:{64*u}px;border-radius:50%;background:{PAPER};border:{4*u}px solid {INK}"></div>' for i in range(n))
+    body = f"""{dots}<div class="c o" id="l1" style="top:{H*0.70}px;font-size:{80*u}px"><span id="cnt">0</span> {P.get('label','')}</div>
+<div class="c o" id="l2" style="top:{H*0.81}px;font-size:{64*u}px;color:{RED}">{P.get('hit_label','')}</div>"""
+    js = (f"const o={{v:0}};tl.from('.dt',{{scale:0,duration:.18,ease:'back.out(3)',stagger:{1.4/n:.4f}}},0.1)"
+          f".to(o,{{v:{n},duration:1.4,ease:'none',onUpdate:()=>document.getElementById('cnt').textContent=Math.round(o.v)}},0.1)"
+          f".from('#l1',{{opacity:0,duration:.3}},0.1)"
+          f".to('.hr',{{backgroundColor:'{RED}',scale:1.35,duration:.25,stagger:.18,ease:'back.out(4)'}},1.8)"
+          f".to('.dt:not(.hr)',{{opacity:.35,duration:.4}},1.8).from('#l2',{{opacity:0,y:20,duration:.35}},2.5)"
+          f".to('#root',{{opacity:0,duration:.35}},{D-0.35});")
+elif a.tpl == 'stamp':
+    # a rubber stamp slams onto the scene, two ink passes misregistered then snapping together (transparent)
+    rot = P.get('rot', -8)
+    one = lambda col, i: (f'<div id="s{i}" style="position:absolute;left:{P.get("x",.5)*W}px;top:{P.get("y",.5)*H}px;transform:translate(-50%,-50%) rotate({rot}deg);'
+                          f'padding:{6*u}px {70*u}px {30*u}px;border:{12*u}px solid {col};border-radius:{10*u}px;color:{col};font-size:{120*u}px;line-height:1.5;white-space:nowrap;mix-blend-mode:multiply">{P["text"]}</div>')
+    body = one('#1d1d1d', 1) + one(RED, 2)
+    js = (f"tl.from('#s1,#s2',{{scale:2.2,opacity:0,duration:.22,ease:'power4.in'}},0.15)"
+          f".fromTo('#s1',{{x:{-14*u},y:{8*u}}},{{x:0,y:0,duration:.35,ease:'power2.out'}},0.37)"
+          f".fromTo('#s2',{{x:{12*u},y:{-6*u}}},{{x:0,y:0,duration:.35,ease:'power2.out'}},0.37)"
+          f".to('#s1',{{opacity:0,duration:.2}},0.75).to('#root',{{opacity:0,duration:.35}},{D-0.35});")
+elif a.tpl == 'measure':
+    # an ink ruler draws out and a red bar grows to the length: makes a size physical (transparent)
+    cm = float(P['cm']); full = float(P.get('max', max(30, cm + 3))); x, y, w = P.get('x', .18) * W, P.get('y', .80) * H, P.get('w', .64) * W
+    ticks = ''.join(f'<div style="position:absolute;right:{x + w * k / full}px;top:{y - (22 if k % 5 == 0 else 12) * u}px;width:{3*u}px;height:{(22 if k % 5 == 0 else 12)*u}px;background:{INK}"></div>' for k in range(int(full) + 1))
+    body = f"""<div id="rl" style="position:absolute;right:{x - 10*u}px;top:{y - 40*u}px;width:{w + 20*u}px;height:{80*u}px;background:{PAPER};border:{4*u}px solid {INK};transform-origin:right"></div>
+<div id="tk">{ticks}</div><div id="bar" style="position:absolute;right:{x}px;top:{y + 6*u}px;width:{w * cm / full}px;height:{22*u}px;background:{RED};transform-origin:right"></div>
+<div class="o" id="val" style="position:absolute;right:{x + w * cm / full - 60*u}px;top:{y - 250*u}px;font-size:{130*u}px;color:{GOLD}"><span id="n">0</span> سم</div>
+<div class="o" id="lab" style="position:absolute;right:{x}px;top:{y + 50*u}px;font-size:{56*u}px">{P.get('label','')}</div>"""
+    js = (f"const o={{v:0}};tl.from('#rl',{{scaleX:0,duration:.5,ease:'power3.out'}},0.1).from('#tk div',{{opacity:0,duration:.05,stagger:.012}},0.3)"
+          f".from('#bar',{{scaleX:0,duration:1.4,ease:'power2.inOut'}},0.8)"
+          f".to(o,{{v:{cm},duration:1.4,ease:'power2.inOut',onUpdate:()=>document.getElementById('n').textContent=Math.round(o.v)}},0.8)"
+          f".from('#val',{{opacity:0,duration:.3}},0.8).from('#lab',{{opacity:0,duration:.4}},1.6).to('#root',{{opacity:0,duration:.35}},{D-0.35});")
+elif a.tpl == 'cctv':
+    # surveillance-footage dressing for scenes retold from real camera footage (transparent, lasts the whole scene)
+    m = 46 * u; br = lambda s: f'<div style="position:absolute;{s};width:{90*u}px;height:{90*u}px;border-color:{PAPER};border-style:solid;opacity:.9"></div>'
+    body = (br(f'left:{m}px;top:{m}px;border-width:{5*u}px 0 0 {5*u}px') + br(f'right:{m}px;top:{m}px;border-width:{5*u}px {5*u}px 0 0')
+            + br(f'left:{m}px;bottom:{m}px;border-width:0 0 {5*u}px {5*u}px') + br(f'right:{m}px;bottom:{m}px;border-width:0 {5*u}px {5*u}px 0')
+            + f"""<div style="position:absolute;inset:0;background:rgba(8,12,10,.30)"></div><div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.10) 0 {2*u}px,transparent {2*u}px {5*u}px)"></div>
+<div style="position:absolute;inset:0;box-shadow:inset 0 0 {220*u}px rgba(0,0,0,.55)"></div>
+<div id="rec" style="position:absolute;left:{m+30*u}px;top:{m+26*u}px;font-family:monospace;font-size:{38*u}px;color:{PAPER};direction:ltr"><span id="dot" style="color:{RED}">●</span> REC</div>
+<div style="position:absolute;right:{m+30*u}px;top:{m+18*u}px;font-size:{42*u}px;color:{PAPER};background:rgba(0,0,0,.55);padding:{2*u}px {20*u}px {8*u}px">{P.get('label','')}</div>""")
+    js = f"tl.from('#root',{{opacity:0,duration:.3}},0);for(let t=0;t<{D};t+=1)tl.to('#dot',{{opacity:0,duration:.01}},t+.5).to('#dot',{{opacity:1,duration:.01}},t+1);tl.to('#root',{{opacity:0,duration:.3}},{D-0.3});"
 else:
     raise SystemExit('unknown template ' + a.tpl)
 
