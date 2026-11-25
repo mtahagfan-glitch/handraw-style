@@ -36,3 +36,14 @@ Read before starting an episode; add to it after each one.
   normal age vs his age). A stat card makes the contrast stick.
 - **Shorts are the free sample**: a short gives the best 45 s and ends on the open question; the long video is the
   full answer. Each short points to the long video.
+
+## Shorts captions (episode 3)
+- **Arabic word order**: libass shapes each colour-tagged word as its own run and, with a left-to-right base direction,
+  lays the runs out left to right, so a karaoke line reads backwards. Every ASS style must use `Encoding -1`
+  (auto base direction → RTL). shorts.py does this; any new caption script must too. Check one frame with a
+  highlighted word in the middle of the line before rendering a batch.
+- **Captions ahead of the voice**: estimating word times by letter count inside a sentence drifts by up to a second
+  whenever the narrator pauses mid-sentence. shorts.py now takes Whisper's real word times (1:1 when the word counts
+  match, otherwise mapped by character position and snapped to the nearest real onset).
+- **Amiri size**: libass fits ascent+descent into the point size, and Amiri's are tall, so its glyphs come out
+  about 57% of a normal font. Captions are 330, title 270/200: do not "fix" them back down.
