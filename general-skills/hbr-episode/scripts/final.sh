@@ -7,7 +7,7 @@ WK=${1:?work dir}; NAME=${2:?output name}; AFTER=${3:-2}
 CH="$(cd "$(dirname "$0")/../../.." && pwd)/output/channel"
 mkdir -p final_hd
 C=$(python3 -c "import json;print(json.load(open('$WK/align.json'))['cuts'][$AFTER]/25)")
-G=${GAIN:+volume=${GAIN}dB,alimiter=limit=0.89:level=false,}   # GAIN=1.5 lifts a quiet mix toward -14 LUFS
+G=${GAIN:+volume=${GAIN}dB,alimiter=limit=0.84:level=false,}   # GAIN=1.5 lifts a quiet mix toward -14 LUFS
 V="scale=2560:1440:flags=lanczos,unsharp=5:5:0.35:5:5:0,format=yuv420p"
 E="-c:v libx264 -preset medium -crf 21 -maxrate 7M -bufsize 14M -r 25 -g 50 -c:a aac -b:a 192k -ar 48000 -ac 2"
 [ -s final_hd/p1.mp4 ] || ffmpeg -y -v error -i ${WK}_25d.mp4 -t $C -vf "$V" -af "${G}afade=t=out:st=$(python3 -c "print($C-0.5)"):d=0.5" $E final_hd/p1.mp4
