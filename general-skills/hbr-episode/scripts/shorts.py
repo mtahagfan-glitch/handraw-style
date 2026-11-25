@@ -50,19 +50,21 @@ for n, sh in enumerate(SHORTS, 1):
     LOOP = sh.get('loop') or sh.get('end', '') is None; E = 0.0 if LOOP else END
     L = ["[Script Info]", "ScriptType: v4.00+", "PlayResX: 1080", "PlayResY: 1920", "WrapStyle: 0", "", "[V4+ Styles]",
          "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-         "Style: Title,Amiri,92,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,6,0,8,60,60,150,1",
-         "Style: Cap,Amiri,112,&H00FFFFFF,&H0,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,8,3,8,60,60,1330,1",
-         "Style: Brand,Amiri,55,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,4,0,2,60,60,120,1",
-         "Style: End,Amiri,101,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,7,0,5,60,60,0,1",
+         "Style: Title,Amiri,270,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,6,0,8,60,60,150,1",
+         "Style: Cap,Amiri,330,&H00FFFFFF,&H0,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,8,3,8,40,40,1330,1",
+         "Style: Brand,Amiri,120,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,4,0,2,60,60,120,1",
+         "Style: End,Amiri,220,&H00FFFFFF,&H0,&H00000000,&H0,-1,0,0,0,100,100,0,0,1,7,0,5,60,60,0,1",
          "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"]
     ev = lambda st, a_, b_, t: L.append(f"Dialogue: 0,{ts(a_)},{ts(b_)},{st},,0,0,0,,{t}")
-    ev('Title', 0, dur, sh['title'].replace('|', r'\N'))
+    # libass fits ascent+descent into Fontsize and Amiri's are tall, so its glyphs come out ~57% of a normal font: sizes are big on purpose: place the two title lines by hand
+    for j, line in enumerate(sh['title'].split('|')[:2]):
+        ev('Title', 0, dur, (r'{\an8\pos(540,-20)\c&H00D7FF&}' if j == 0 else r'{\an8\pos(540,165)\fs200}') + line)
     ev('Brand', 0, dur, 'حبر وسالفة')
     for x in S:
         if sh['first'] - 1 <= x['scene'] <= sh['last'] - 1:
             for txt, t0, t1 in karaoke(x['text'], x['start'] - s0, x['end'] - s0):
                 if t1 > 0 and t0 < dur: ev('Cap', max(0, t0), min(dur, t1), txt)
-    if not LOOP: ev('End', dur, dur + END, sh.get('end', '') + r'\N{\c&H1E1EE6&}القصة كاملة في القناة\N{\c&H00D7FF&\fs70}حبر وسالفة')
+    if not LOOP: ev('End', dur, dur + END, sh.get('end', '') + r'\N{\c&H1E1EE6&}القصة كاملة في القناة\N{\c&H00D7FF&\fs150}حبر وسالفة')
     ass = f'{OUT}/short{n}.ass'; open(ass, 'w').write('\n'.join(L) + '\n')
     f = (f"[0:v]trim={s0:.3f}:{s1:.3f},setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration={E},split=2[a][b];"
          + ("[a]scale=1440:2560:flags=lanczos,unsharp=5:5:0.3:5:5:0[v0];[b]nullsink;" if VERT else
