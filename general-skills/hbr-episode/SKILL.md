@@ -68,12 +68,16 @@ lands mid-sentence.
   Overlay: `ffmpeg -i video/NN.mp4 -c:v libvpx-vp9 -i tag.webm -filter_complex "[0][1]overlay=enable='between(t,1,5)'" ...`
   (keep the scene's exact frame count).
 
+Put it together per scene: `WORK=$PWD/parallax_real python3 "$SK/scripts/compose.py"` dissolves the moving shots in
+(`episode.json` "motion": scene, file, at, len) and lays the graphics ("graphics", files from `mg.py` in `mg/`),
+writing `video_comp/`; assemble with `VDIR=video_comp`.
+
 ## 4. Sound
 
 `W=parallax_real python3 "$SK/scripts/mix.py"` → `parallax_real/final_audio.wav`:
 voice, an SFX on every scene cut (rules in `episode.json`), music sections ducked under the voice, and a
 riser + soft boom + breath at every music change so the viewer feels a new chapter. Then
-`python3 "$SK/scripts/pipeline.py" assemble parallax_real/final_audio.wav` → `parallax_real_25d.mp4` + `.srt`.
+`VDIR=video_comp python3 "$SK/scripts/pipeline.py" assemble parallax_real/final_audio.wav` → `parallax_real_25d.mp4` + `.srt`.
 Watch every music change and the first 2 minutes before exporting.
 
 ## 5. Export

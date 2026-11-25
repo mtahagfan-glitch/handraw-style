@@ -241,7 +241,7 @@ def s2t(x):
 
 def assemble(voice):
     A = json.load(open(WORK / "align.json"))
-    lst = WORK / "video" / "list.txt"
+    lst = WORK / os.environ.get("VDIR", "video") / "list.txt"   # VDIR=video_comp after compose.py
     lst.write_text("".join(f"file '{i:02d}.mp4'\n" for i in range(1, len(SCENES) + 1)))
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-i", voice,
                     "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest",
