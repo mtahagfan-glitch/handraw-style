@@ -71,7 +71,7 @@ for n, sh in enumerate(SHORTS, 1):
          "[a]scale=-2:2560,crop=1440:2560,boxblur=40:5,eq=brightness=-0.35[bg];"
          "[b]scale=-2:1334:flags=lanczos,crop=1440:1334,unsharp=5:5:0.4:5:5:0[fg];[bg][fg]overlay=0:493[v0];") +
          f"[v0]drawbox=enable='gte(t,{dur:.2f})':x=0:y=0:w=iw:h=ih:color=black@0.78:t=fill,ass={ass}:fontsdir={FONTS}:shaping=complex,format=yuv420p[v];"
-         f"[0:a]atrim={s0:.3f}:{s1:.3f},asetpts=PTS-STARTPTS,afade=t=out:st={dur-(0.15 if LOOP else 0.4):.2f}:d={0.15 if LOOP else 0.4},apad=pad_dur={E}[au]")
+         f"[0:a]atrim={s0:.3f}:{s1:.3f},asetpts=PTS-STARTPTS,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,afade=t=out:st={dur-(0.15 if LOOP else 0.4):.2f}:d={0.15 if LOOP else 0.4},apad=pad_dur={E}[au]")
     out = f'{OUT}/short{n}.mp4'
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', VID, '-filter_complex', f, '-map', '[v]', '-map', '[au]', '-r', '25',
                     '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-maxrate', '14M', '-bufsize', '28M', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out], check=True)
