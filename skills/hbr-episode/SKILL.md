@@ -17,8 +17,9 @@ Lessons from the first two episodes are in [references/lessons.md](references/le
   The hook ends on a question; the story answers it at the end.
 - Write for the ear and give the owner a performance copy with delivery marks: [references/narration.md](references/narration.md).
 - Write `scenes.json`: `[{"ar": "<Saudi-dialect narration>", "img": "<English image prompt>"}]`, one drawing per
-  scene, a scene every 10–20 s of narration. Image prompts follow the channel style (ink line art on aged paper,
-  muted colour accents, gold/blue light); describe what is seen, never ask for text in the image.
+  scene, a scene every 10–20 s of narration. Image prompts follow the channel style in
+  [references/style.md](references/style.md) (noir graphic-novel painting, one crimson accent; collage accents on hooks
+  and chapter openers); describe what is seen, never ask for text in the image.
 - Mark in `episode.json` (see `scripts/mix.py` docstring for the full schema):
   - `music` sections (see [references/music.md](references/music.md)),
   - `motion` — 2–3 scenes that become real moving shots ([references/motion-hooks.md](references/motion-hooks.md)),
