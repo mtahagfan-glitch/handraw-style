@@ -2,6 +2,7 @@
 (ESRGAN 'anime' models flatten the paper texture: do not use them).
 
   python3 upscale.py imgs/ plates/          (run from the episode folder; FAL_KEY in the env)
+  LOCAL=1 python3 upscale.py imgs/ plates/  local Lanczos only (also the automatic fallback when SeedVR fails)
 
 For every imgs/NN.png -> plates/NN/plate.jpg at 2560x1440 (or 1440x2560 for portrait), skipping done ones.
 depth.png does not need redoing (the shader samples it by UV).
@@ -11,9 +12,17 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from PIL import Image
 src, dst = Path(sys.argv[1]), Path(sys.argv[2])
+def local(p, out):
+    """no fal balance / refused image: Lanczos + light unsharp. Fine for the 1.33x step from gpt-image-2's
+    1920x1088 / 1088x1920; noticeably softer than SeedVR only for small sources."""
+    from PIL import ImageFilter
+    im = Image.open(p).convert('RGB'); size = (2560, 1440) if im.width >= im.height else (1440, 2560)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    im.resize(size, Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 60, 2)).save(out, quality=95); print('local', p.name, flush=True)
 def up(p):
     out = dst / p.stem / 'plate.jpg'
     if out.exists() and max(Image.open(out).size) >= 2560: return
+    if os.environ.get('LOCAL'): return local(p, out)
     uri = 'data:image/png;base64,' + base64.b64encode(p.read_bytes()).decode()
     req = urllib.request.Request('https://fal.run/fal-ai/seedvr/upscale/image', json.dumps({'image_url': uri, 'upscale_factor': 3}).encode(),
                                  {'Authorization': 'Key ' + os.environ['FAL_KEY'], 'Content-Type': 'application/json'})
@@ -26,5 +35,5 @@ def safe(p):
     for k in range(3):                      # fal sometimes answers 422/5xx under load: retry, never kill the batch
         try: return up(p)
         except Exception as e: err = e
-    print('FAILED', p.name, err, flush=True)
+    print('FAILED', p.name, err, '-> local upscale', flush=True); local(p, dst / p.stem / 'plate.jpg')
 with ThreadPoolExecutor(3) as ex: list(ex.map(safe, sorted(src.glob('*.png'))))
