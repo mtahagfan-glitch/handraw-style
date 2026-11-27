@@ -29,3 +29,11 @@ Rules
 - Vertical shorts: same prefix, `1088x1920`, subject in the middle third (the top and bottom carry captions).
 - Tested on episode 3 scenes 1, 12 and 34 (`output/style-lab/compare.jpg`): old ink, full collage, noir
   painting. The noir painting won; the collage accent mix still needs its 3-scene test.
+
+Lessons from the first Google Flow test (Nano Banana, Nov 2026)
+- Always add a `Setting:` line with country, year and the people's nationality. Noir pulls every model toward
+  1940s Hollywood: without it a Japanese engineer became an American detective in a New York office.
+- Never ask to "keep the top/bottom dark for captions": models answer with black letterbox bars and a paper frame.
+  Ask for a full-bleed image, subject in the middle third, top and bottom of the scene simple.
+- A style reference image in Flow copies its subject and layout too (a seated soldier turned every scene into a
+  seated figure); the text prompt alone gives the style.

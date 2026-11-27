@@ -117,3 +117,6 @@ Write what was learnt into `references/lessons.md` so the next episode starts be
   subscription issue is solved.
 - Google Flow / Flow Music have no API: when they are the best tool, hand the owner a ready prompt and the exact
   part of the result to keep.
+- Division of work with the owner: **all stills are drawn here** (gpt-image-2 + SeedVR on fal); the owner only makes
+  the moving shots in Google Flow (Veo image-to-video). Give them the stills to animate plus one motion prompt each,
+  named by scene number, and splice what comes back with `compose.py`.
