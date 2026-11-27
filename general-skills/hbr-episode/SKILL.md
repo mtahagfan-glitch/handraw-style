@@ -108,6 +108,13 @@ Shorts ≤ 3 min, loudness -14 ±2 LUFS, true peak, long silences, black stretch
 A week after release, review retention with the owner: [references/retention-review.md](references/retention-review.md).
 Write what was learnt into `references/lessons.md` so the next episode starts better.
 
+## Tracking board (TickTick)
+
+The owner tracks the channel in TickTick, project «🎨 حبر وسالفة» (kanban, id `6b09636b8f088d92a765c7ea`), columns:
+«🎙️ عليك» (owner: recording, Flow motion clips, uploads), «⚙️ عند Claude», «✅ جاهز للنشر» (one checklist task
+per episode and one for its shorts), «📺 منشور». Keep it current: add a card when work starts, move it when it
+changes hands or is ready, and never mark the owner's cards complete (they tick them).
+
 ## Generators available
 
 - Images: `gpt-image-2` skill (fal). Upscale: SeedVR (fal). Video: Kling / Veo on fal (`motion.py`).
