@@ -29,8 +29,9 @@ Lessons from the first two episodes are in [references/lessons.md](references/le
 
 ## 1. Drawings
 
-1. Character sheets first for recurring people, then every scene with the `gpt-image-2` skill
-   (`landscape_16_9`, quality high), passing the character sheet with `--image` so faces stay the same.
+1. Character sheets first for recurring people, then every scene: `python3 "$SK/scripts/draw.py" prompts.txt imgs/`
+   (gpt-image-2, one request per scene, 3 at a time, resumable; a refused prompt is reported FAILED and the rest
+   go on: rephrase it and rerun). Use the `gpt-image-2` skill with `--image` <sheet> for scenes with a recurring face.
 2. Look at a contact sheet of all scenes before going on; redo the weak ones.
 3. Upscale: `python3 "$SK/scripts/upscale.py" imgs/ plates/` (SeedVR on fal → `plates/NN/plate.jpg` 2560×1440).
 4. Depth: `bash "$SK/../parallax/scripts/depth.sh" plates/NN/plate.jpg plates/NN/depth.png` per scene.
