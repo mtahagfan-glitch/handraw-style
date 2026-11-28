@@ -21,6 +21,15 @@ Templates (Arabic text is shaped by the browser; font = Amiri Bold from assets/f
   cctv      {"label": "كاميرا مراقبة · بانمونجوم"}          REC, brackets, scanlines for scenes told from real CCTV (webm, whole scene);
             when overlaying, also grade the scene: -vf "hue=s=0.35,noise=alls=10:allf=t" so it reads as footage
 
+  kinetic   {"lines":["كل مهمة","بجلسة لحالها"], "hi":["بجلسة"], "theme":"light|dark", "img":"cutout.png", "arrow":true,
+             "arrow_from":[.18,.48], "arrow_to":[.36,.58], "color":"#e0312a"}
+            fast explainer beat: spotlight paper or dark stage, words pop in one by one with an RGB-split fringe that settles,
+            coloured keywords, slow push + hit-shake, optional cut-out object with shadow and a hand-drawn arrow (mp4 card).
+            Best in shorts: one beat per 1.5-3 s, 2-4 words per line.
+  board     {"title":"...", "notes":[["الخطوة 1","..."],["الخطوة 2","..."],["الخطوة 3","..."]]}
+            investigation board: pinned paper notes pop in and a red string draws between them (mp4). For plots, suspects, steps.
+  chart     {"label":"...", "values":[2,5,3,8,6,12], "value":"+300%"}   glowing line chart draws, value pops (mp4)
+
 Use a graphic only when it makes the sentence land harder (a number to remember, the detail to look at, a new part).
 Never two at once, never on a moving (Flow/Veo) shot, and keep at least one plain scene between graphics.
 
@@ -183,6 +192,87 @@ elif a.tpl == 'cctv':
 <div id="rec" style="position:absolute;left:{m+30*u}px;top:{m+26*u}px;font-family:monospace;font-size:{38*u}px;color:{PAPER};direction:ltr"><span id="dot" style="color:{RED}">●</span> REC</div>
 <div style="position:absolute;right:{m+30*u}px;top:{m+18*u}px;font-size:{42*u}px;color:{PAPER};background:rgba(0,0,0,.55);padding:{2*u}px {20*u}px {8*u}px">{P.get('label','')}</div>""")
     js = f"tl.from('#root',{{opacity:0,duration:.3}},0);for(let t=0;t<{D};t+=1)tl.to('#dot',{{opacity:0,duration:.01}},t+.5).to('#dot',{{opacity:1,duration:.01}},t+1);tl.to('#root',{{opacity:0,duration:.3}},{D-0.3});"
+elif a.tpl == 'kinetic':
+    # kinetic-typography beat (fast explainer look): spotlight paper (light) or dark stage, 1-3 short lines pop in word by
+    # word, keywords coloured, RGB-split fringe that settles, slow camera push with a small hit-shake; optional cut-out
+    # object (B&W photo/PNG) with drop shadow and a hand-drawn arrow drawing toward it. Full card (mp4).
+    light = P.get('theme', 'light') == 'light'; HI = set(P.get('hi', [])); col = P.get('color', RED)
+    fg = '#1b1b1b' if light else PAPER
+    eh = '80% 48%' if H > W else '62% 58%'
+    stage = (f"radial-gradient(ellipse {eh} at 50% 44%, #f4f2ee 0%, #d9d6d0 50%, #7a7772 84%, #2a2927 100%)" if light
+             else "radial-gradient(ellipse 60% 55% at 50% 42%, #2b2927 0%, #121110 70%, #050505 100%)")
+    grid = (f'<div style="position:absolute;inset:0;opacity:{.16 if light else .08};background-image:linear-gradient({fg} 1px,transparent 1px),'
+            f'linear-gradient(90deg,{fg} 1px,transparent 1px);background-size:{56*u}px {56*u}px;-webkit-mask:radial-gradient(ellipse 45% 40% at 50% 60%,#000,transparent)"></div>'
+            if P.get('grid', True) else '')
+    k = 0; rows = ''; ty = P.get('y', .30 if P.get('img') else .40)
+    for li, line in enumerate(P['lines']):
+        ws = ''
+        for w in line.split():
+            c = col if w in HI else fg; ws += f'<span class="w" id="w{k}" style="color:{c}">{w}</span> '; k += 1
+        size = (P.get('size', 120) if li == 0 else P.get('size2', P.get('size', 120) * .62)) * u
+        rows += f'<div class="c" style="position:relative;font-size:{size}px;line-height:1.45">{ws}</div>'
+    img = ''
+    if P.get('img'):
+        img = (f'<img id="obj" src="assets/obj.png" style="position:absolute;left:50%;top:{P.get("img_y",.62)*H}px;height:{P.get("img_h",.34)*H}px;'
+               f'transform:translate(-50%,-50%);filter:grayscale(1) contrast(1.15) drop-shadow({18*u}px {26*u}px {22*u}px rgba(0,0,0,.45))"/>')
+    arrow = ''
+    if P.get('arrow'):
+        ax, ay = P.get('arrow_from', [.18, .48]); bx, by = P.get('arrow_to', [.36, .58])
+        x1, y1, x2, y2 = ax*W, ay*H, bx*W, by*H; mx, my = (x1+x2)/2 + (y2-y1)*.25, (y1+y2)/2 - (x2-x1)*.25
+        arrow = (f'<svg style="position:absolute;inset:0" width="{W}" height="{H}"><path id="ar" d="M{x1},{y1} Q{mx},{my} {x2},{y2}" fill="none" stroke="{fg}" '
+                 f'stroke-width="{7*u}" stroke-linecap="round"/><path id="ah" d="M{x2-30*u},{y2-14*u} L{x2},{y2} L{x2-12*u},{y2-32*u}" fill="none" stroke="{fg}" '
+                 f'stroke-width="{7*u}" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+    css += (f"#cam{{position:absolute;inset:0;background:{stage}}}.w{{display:inline-block;text-shadow:{6*u}px 0 0 rgba(255,40,40,.55),{-6*u}px 0 0 rgba(0,210,220,.55)}}"
+            f".settle .w{{text-shadow:{1.5*u}px 0 0 rgba(255,40,40,.35),{-1.5*u}px 0 0 rgba(0,210,220,.35)}}"
+            f"#obj{{outline:none}}.vig{{position:absolute;inset:0;box-shadow:inset 0 0 {260*u}px rgba(0,0,0,{.55 if light else .8})}}")
+    body = (f'<div id="cam">{grid}<div id="txt" style="position:absolute;left:{W*.06}px;right:{W*.06}px;top:{ty*H}px;transform:translateY(-50%)">{rows}</div>'
+            f'{img}{arrow}<div class="vig"></div></div>')
+    js = (f"tl.fromTo('#cam',{{scale:1.0}},{{scale:1.06,duration:{D},ease:'none'}},0)"
+          f".from('.w',{{scale:1.6,opacity:0,filter:'blur({10*u}px)',duration:.28,stagger:{P.get('stagger',.22)},ease:'back.out(2.2)'}},0.15)"
+          f".to('#cam',{{x:{8*u},y:{-5*u},duration:.05,yoyo:true,repeat:3}},0.15)"
+          f".add(()=>document.getElementById('txt').classList.add('settle'),{0.25 + k*P.get('stagger',.22)})")
+    if P.get('img'): js += f".from('#obj',{{y:{80*u},opacity:0,rotation:-4,duration:.6,ease:'power3.out'}},{0.3 + k*0.15})"
+    if P.get('arrow'):
+        js += (f";const ar=document.getElementById('ar'),L=ar.getTotalLength();gsap.set(ar,{{strokeDasharray:L,strokeDashoffset:L}});"
+               f"tl.to(ar,{{strokeDashoffset:0,duration:.45,ease:'power2.inOut'}},{0.6 + k*0.18}).from('#ah',{{opacity:0,duration:.1}},{1.05 + k*0.18})")
+    js += f";tl.to('#root',{{opacity:0,duration:.3}},{D-0.3});"
+elif a.tpl == 'board':
+    # investigation board: paper notes pinned on a dark wall pop in one by one and a red string draws between them (mp4)
+    notes = P['notes']; n = len(notes)
+    pos = P.get('pos') or ([[.32, .26], [.68, .44], [.32, .62], [.68, .80]] if H > W else [[.82, .34], [.61, .68], [.39, .34], [.18, .68]])[:n]   # right-to-left zigzag
+    nw = (.42 if H > W else .19) * W
+    cards = ''
+    for i, (nt, ns) in enumerate(notes):
+        x, y = pos[i]; r = [-4, 3, -2, 5][i % 4]
+        cards += (f'<div class="nt" id="n{i}" style="position:absolute;left:{x*W}px;top:{y*H}px;width:{nw}px;transform:translate(-50%,-50%) rotate({r}deg);'
+                  f'background:#ebe7df;padding:{26*u}px {30*u}px;box-shadow:{14*u}px {20*u}px {24*u}px rgba(0,0,0,.55);color:#1b1b1b">'
+                  f'<div style="position:absolute;top:{-14*u}px;left:50%;width:{90*u}px;height:{30*u}px;margin-left:{-45*u}px;background:rgba(230,225,210,.75);transform:rotate(-3deg)"></div>'
+                  f'<div style="font-size:{62*u}px;color:{RED}">{nt}</div><div style="font-size:{46*u}px;line-height:1.5">{ns}</div>'
+                  f'<div style="height:{8*u}px;width:60%;margin-top:{14*u}px;background:rgba(0,0,0,.12)"></div></div>')
+    pts = ' '.join(f'{pos[i][0]*W},{pos[i][1]*H}' for i in range(n))
+    title = f'<div class="c" style="top:{H*.06}px;font-size:{64*u}px;color:{PAPER};background:rgba(0,0,0,.5);display:inline-block;left:50%;right:auto;transform:translateX(-50%);padding:{4*u}px {30*u}px {12*u}px">{P["title"]}</div>' if P.get('title') else ''
+    css += f"#wall{{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,#2c2a27,#0c0b0a)}}"
+    body = (f'<div id="wall"></div><svg style="position:absolute;inset:0" width="{W}" height="{H}"><polyline id="str" points="{pts}" fill="none" stroke="{RED}" '
+            f'stroke-width="{6*u}" stroke-linejoin="round"/></svg>{cards}{title}')
+    js = ("const s=document.getElementById('str');let L=0;const P=s.points;for(let i=1;i<P.numberOfItems;i++){const a=P.getItem(i-1),b=P.getItem(i);L+=Math.hypot(b.x-a.x,b.y-a.y)}"
+          "gsap.set(s,{strokeDasharray:L,strokeDashoffset:L});"
+          f"tl.from('.nt',{{scale:1.4,opacity:0,duration:.35,stagger:.45,ease:'back.out(2)'}},0.2)"
+          f".to(s,{{strokeDashoffset:0,duration:{max(1.0, n*.45)},ease:'power1.inOut'}},0.5)"
+          f".fromTo('#root',{{scale:1}},{{scale:1.05,duration:{D},ease:'none'}},0).to('#root',{{opacity:0,duration:.3}},{D-0.3});")
+elif a.tpl == 'chart':
+    # a glowing line chart zig-zags up (or down) across a dark stage, the value pops at the end (mp4)
+    vals = P.get('values', [2, 5, 3, 8, 6, 12]); mx = max(vals); n = len(vals)
+    x0, x1, y0, y1 = .18*W, .82*W, .78*H, .30*H
+    pts = ' '.join(f'{x0 + (x1-x0)*i/(n-1)},{y0 - (y0-y1)*v/mx}' for i, v in enumerate(vals))
+    css += "#st{position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 45%,#262422,#080808)}"
+    body = (f'<div id="st"></div><svg style="position:absolute;inset:0" width="{W}" height="{H}"><polyline id="ln" points="{pts}" fill="none" stroke="#f2f0ea" '
+            f'stroke-width="{8*u}" stroke-linejoin="miter" style="filter:drop-shadow(0 0 {14*u}px rgba(255,255,255,.6))"/></svg>'
+            f'<div class="c o" id="lab" style="top:{H*.10}px;font-size:{90*u}px">{P.get("label","")}</div>'
+            f'<div class="o" id="val" style="position:absolute;left:{x1 - 40*u}px;top:{y1 - 190*u}px;font-size:{120*u}px;color:{RED};direction:ltr">{P.get("value","")}</div>')
+    js = ("const s=document.getElementById('ln');let L=0;const P=s.points;for(let i=1;i<P.numberOfItems;i++){const a=P.getItem(i-1),b=P.getItem(i);L+=Math.hypot(b.x-a.x,b.y-a.y)}"
+          "gsap.set(s,{strokeDasharray:L,strokeDashoffset:L});"
+          f"tl.from('#lab',{{opacity:0,y:{30*u},duration:.4}},0.1).to(s,{{strokeDashoffset:0,duration:1.6,ease:'power2.inOut'}},0.3)"
+          f".from('#val',{{scale:1.8,opacity:0,duration:.3,ease:'back.out(2)'}},1.8).to('#root',{{opacity:0,duration:.3}},{D-0.3});")
 else:
     raise SystemExit('unknown template ' + a.tpl)
 
@@ -196,6 +286,7 @@ p = Path(tempfile.mkdtemp(prefix='mg_'))
 for f in ('hyperframes.json', 'package.json', 'meta.json'): shutil.copy(SKILL / 'assets' / 'hf-template' / f, p / f)
 (p / 'assets').mkdir(); shutil.copy(FONT, p / 'assets' / 'Amiri-Bold.ttf')
 if a.tpl == 'map' and P.get('bg'): shutil.copy(P['bg'], p / 'assets' / 'bg.jpg')
+if a.tpl == 'kinetic' and P.get('img'): shutil.copy(P['img'], p / 'assets' / 'obj.png')
 (p / 'index.html').write_text(html)
 fmt = ['--format', 'webm'] if a.out.endswith('.webm') else ['--format', 'mov'] if a.out.endswith('.mov') else []
 subprocess.run(['npx', 'hyperframes', 'render', '--fps', '25', '--quality', 'delivery', *fmt, '-o', str(Path(a.out).resolve())],

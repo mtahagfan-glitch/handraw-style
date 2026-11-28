@@ -61,11 +61,12 @@ lands mid-sentence.
   over the parallax scene with `xfade` so the action peaks on the spoken word ([motion-hooks](references/motion-hooks.md)).
 - **Graphics**: `python3 "$SK/scripts/mg.py" <stat|name|timeline|map|quote> '<json>' out.(mp4|webm)`.
   `.mp4` = full card (cut it in as its own beat), `.webm` = transparent overlay (name tags on a scene).
-  Templates: stat, name, timeline, map, quote, trace (red ink circles/arrows on a detail), chapter (ink-flood
+  Templates: stat, name, timeline, map, quote, kinetic, board, chart, trace (red ink circles/arrows on a detail), chapter (ink-flood
   part title that parks in the corner), dots (one dot per unit, hits turn red), stamp, measure (ruler), cctv.
   Use: a chapter card on every part change, a name tag the first time each key person appears, a stat/dots/measure
   for every number the viewer must remember, a trace when the sentence points at a detail, cctv for scenes retold
-  from real footage. 12–20 per episode; only where it makes the sentence land harder; never two at once.
+  from real footage. Fast explainer beats (`kinetic`, `board`, `chart`) follow
+  [references/kinetic-style.md](references/kinetic-style.md): the main graphic language of shorts. 12–20 per episode; only where it makes the sentence land harder; never two at once.
   Plan them in `episode.json` "graphics" (scene, at = seconds into the scene, tpl, params, dur).
   Overlay: `ffmpeg -i video/NN.mp4 -c:v libvpx-vp9 -i tag.webm -filter_complex "[0][1]overlay=enable='between(t,1,5)'" ...`
   (keep the scene's exact frame count).

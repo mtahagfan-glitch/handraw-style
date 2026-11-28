@@ -16,7 +16,7 @@ from pathlib import Path
 
 FPS = 25; WORK = Path(os.environ.get('WORK', 'parallax_real')); OUT = WORK / 'video_comp'; OUT.mkdir(exist_ok=True)
 ep = json.load(open('episode.json')); G = ep.get('graphics', []); M = ep.get('motion', [])
-FULL = {'stat', 'dots', 'timeline', 'quote'}
+FULL = {'stat', 'dots', 'timeline', 'quote', 'kinetic', 'board', 'chart'}
 n_sc = len(json.load(open('scenes.json')))
 first, last = (int(sys.argv[1]), int(sys.argv[2])) if len(sys.argv) > 2 else (1, n_sc)
 
